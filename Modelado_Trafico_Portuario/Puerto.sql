@@ -1,0 +1,22 @@
+/* Aqui se inicia la división de la tabla general en varias mas especificas*/
+-- Verificar tabla general
+SELECT * FROM trafico_maritimo;
+SELECT DISTINCT ZONA_PORTUARIA, SOCIEDAD_PORTUARIA, TIPO_SERVICIO FROM trafico_maritimo;
+
+-- Creación tabla puerto a partir de la original
+CREATE TABLE PUERTO SELECT DISTINCT ZONA_PORTUARIA, SOCIEDAD_PORTUARIA, TIPO_SERVICIO FROM trafico_maritimo;
+SELECT * FROM PUERTO;
+
+-- Agregar columna id
+ALTER TABLE PUERTO ADD PUERTO_ID INT NOT NULL auto_increment PRIMARY KEY;
+
+-- Verficiar tabla nueva
+SELECT * FROM PUERTO;
+
+-- Cambiar de lugar la columna id
+ALTER TABLE PUERTO MODIFY COLUMN PUERTO_ID INT AFTER ZONA_PORTUARIA;
+ALTER TABLE PUERTO MODIFY COLUMN ZONA_PORTUARIA VARCHAR(50) AFTER PUERTO_ID;
+
+-- Agregar referencia a tabla provincia
+ALTER TABLE PUERTO ADD PROVINCIA_ID INT;
+ALTER TABLE PUERTO ADD CONSTRAINT FK_PROVINCIA_ID FOREIGN KEY (PROVINCIA_ID) REFERENCES PROVINCIA (PROVINCIA_ID);
